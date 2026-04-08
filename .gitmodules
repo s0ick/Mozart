@@ -1,4 +1,4 @@
 [submodule "hiddify-core"]
 	path = hiddify-core
-	url = https://github.com/s0ick/-mozart-core.git
+	url = https://github.com/s0ick/mozart-core.git
 	branch = v3
