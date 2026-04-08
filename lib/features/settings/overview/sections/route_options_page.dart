@@ -29,14 +29,14 @@ class RouteOptionsPage extends HookConsumerWidget {
               trailing: Switch(
                 value: perAppProxy,
                 onChanged: (value) async {
-                  final newMode = perAppProxy ? PerAppProxyMode.off : PerAppProxyMode.exclude;
+                  final newMode = perAppProxy ? PerAppProxyMode.off : PerAppProxyMode.include;
                   await ref.read(Preferences.perAppProxyMode.notifier).update(newMode);
                   if (!perAppProxy && context.mounted) context.goNamed('perAppProxy');
                 },
               ),
               onTap: () async {
                 if (!perAppProxy) {
-                  await ref.read(Preferences.perAppProxyMode.notifier).update(PerAppProxyMode.exclude);
+                  await ref.read(Preferences.perAppProxyMode.notifier).update(PerAppProxyMode.include);
                 }
                 if (context.mounted) context.goNamed('perAppProxy');
               },

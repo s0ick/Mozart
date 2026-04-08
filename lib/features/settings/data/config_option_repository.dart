@@ -32,7 +32,7 @@ abstract class ConfigOptions {
 
   static final region = PreferencesNotifier.create<Region, String>(
     "region",
-    Region.other,
+    Region.ru,
     mapFrom: Region.values.byName,
     mapTo: (value) => value.name,
   );
@@ -172,6 +172,8 @@ abstract class ConfigOptions {
   static final bypassLan = PreferencesNotifier.create<bool, bool>("bypass-lan", false);
 
   static final allowConnectionFromLan = PreferencesNotifier.create<bool, bool>("allow-connection-from-lan", false);
+
+  static final enableMixedProxy = PreferencesNotifier.create<bool, bool>("enable-mixed-proxy", false);
 
   static final enableFakeDns = PreferencesNotifier.create<bool, bool>("enable-fake-dns", false);
 
@@ -328,6 +330,7 @@ abstract class ConfigOptions {
     "clash-api-port": clashApiPort,
     "bypass-lan": bypassLan,
     "allow-connection-from-lan": allowConnectionFromLan,
+    "enable-mixed-proxy": enableMixedProxy,
     // "enable-dns-routing": enableDnsRouting,
 
     // mux
@@ -365,46 +368,45 @@ abstract class ConfigOptions {
   };
 
   static final singboxConfigOptions = Provider<SingboxConfigOption>((ref) {
-    // final region = ref.watch(Preferences.region);
-    final rules = <SingboxRule>[];
-    // final rules = switch (region) {
-    //   Region.ir => [
-    //       const SingboxRule(
-    //         domains: "domain:.ir,geosite:ir",
-    //         ip: "geoip:ir",
-    //         outbound: RuleOutbound.bypass,
-    //       ),
-    //     ],
-    //   Region.cn => [
-    //       const SingboxRule(
-    //         domains: "domain:.cn,geosite:cn",
-    //         ip: "geoip:cn",
-    //         outbound: RuleOutbound.bypass,
-    //       ),
-    //     ],
-    //   Region.ru => [
-    //       const SingboxRule(
-    //         domains: "domain:.ru",
-    //         ip: "geoip:ru",
-    //         outbound: RuleOutbound.bypass,
-    //       ),
-    //     ],
-    //   Region.af => [
-    //       const SingboxRule(
-    //         domains: "domain:.af,geosite:af",
-    //         ip: "geoip:af",
-    //         outbound: RuleOutbound.bypass,
-    //       ),
-    //     ],
-    //   Region.id => [
-    //       const SingboxRule(
-    //         domains: "domain:.id,geosite:id",
-    //         ip: "geoip:id",
-    //         outbound: RuleOutbound.bypass,
-    //       ),
-    //     ],
-    //   _ => <SingboxRule>[],
-    // };
+    final currentRegion = ref.watch(region);
+    final rules = switch (currentRegion) {
+      Region.ir => [
+          const SingboxRule(
+            domains: "domain:.ir,geosite:ir",
+            ip: "geoip:ir",
+            outbound: RuleOutbound.bypass,
+          ),
+        ],
+      Region.cn => [
+          const SingboxRule(
+            domains: "domain:.cn,geosite:cn",
+            ip: "geoip:cn",
+            outbound: RuleOutbound.bypass,
+          ),
+        ],
+      Region.ru => [
+          const SingboxRule(
+            domains: "domain:.ru,domain:.su,domain:.xn--p1ai",
+            ip: "geoip:ru",
+            outbound: RuleOutbound.bypass,
+          ),
+        ],
+      Region.af => [
+          const SingboxRule(
+            domains: "domain:.af,geosite:af",
+            ip: "geoip:af",
+            outbound: RuleOutbound.bypass,
+          ),
+        ],
+      Region.id => [
+          const SingboxRule(
+            domains: "domain:.id,geosite:id",
+            ip: "geoip:id",
+            outbound: RuleOutbound.bypass,
+          ),
+        ],
+      _ => <SingboxRule>[],
+    };
 
     final mode = ref.watch(serviceMode);
     // final reg = ref.watch(Preferences.region.notifier).raw();
@@ -422,7 +424,7 @@ abstract class ConfigOptions {
       remoteDnsDomainStrategy: ref.watch(remoteDnsDomainStrategy),
       directDnsAddress: ref.watch(directDnsAddress),
       directDnsDomainStrategy: ref.watch(directDnsDomainStrategy),
-      mixedPort: ref.watch(mixedPort),
+      mixedPort: (mode == ServiceMode.tun && !ref.watch(enableMixedProxy)) ? 0 : ref.watch(mixedPort),
       tproxyPort: ref.watch(tproxyPort),
       directPort: ref.watch(directPort),
       redirectPort: ref.watch(redirectPort),

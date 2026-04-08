@@ -45,7 +45,14 @@ abstract class Preferences {
 
   static final includeApps = PreferencesNotifier.create<List<String>, List<String>>(
     "per_app_proxy_include_list",
-    <String>[],
+    <String>[
+      "org.telegram.messenger",
+      "org.thunderdog.challegram",
+      "com.google.android.youtube",
+      "com.instagram.android",
+      "com.android.chrome",
+      "org.mozilla.firefox",
+    ],
   );
 
   static final excludeApps = PreferencesNotifier.create<List<String>, List<String>>(
@@ -89,7 +96,7 @@ abstract class Preferences {
 
   static final perAppProxyMode = PreferencesNotifier.create<PerAppProxyMode, String>(
     "per_app_proxy_mode",
-    PerAppProxyMode.off,
+    PerAppProxyMode.include,
     mapFrom: PerAppProxyMode.values.byName,
     mapTo: (value) => value.name,
   );

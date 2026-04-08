@@ -156,21 +156,23 @@ class SettingsPage extends HookConsumerWidget {
             icon: Icons.dns_rounded,
             namedLocation: context.namedLocation('dnsOptions'),
           ),
-          SettingsSection(
-            title: t.pages.settings.inbound.title,
-            icon: Icons.input_rounded,
-            namedLocation: context.namedLocation('inboundOptions'),
-          ),
-          SettingsSection(
-            title: t.pages.settings.tlsTricks.title,
-            icon: Icons.content_cut_rounded,
-            namedLocation: context.namedLocation('tlsTricks'),
-          ),
-          SettingsSection(
-            title: t.pages.settings.warp.title,
-            icon: Icons.cloud_rounded,
-            namedLocation: context.namedLocation('warpOptions'),
-          ),
+          if (PlatformUtils.isDesktop) ...[
+            SettingsSection(
+              title: t.pages.settings.inbound.title,
+              icon: Icons.input_rounded,
+              namedLocation: context.namedLocation('inboundOptions'),
+            ),
+            SettingsSection(
+              title: t.pages.settings.tlsTricks.title,
+              icon: Icons.content_cut_rounded,
+              namedLocation: context.namedLocation('tlsTricks'),
+            ),
+            SettingsSection(
+              title: t.pages.settings.warp.title,
+              icon: Icons.cloud_rounded,
+              namedLocation: context.namedLocation('warpOptions'),
+            ),
+          ],
           if (PlatformUtils.isIOS)
             Material(
               child: ListTile(
