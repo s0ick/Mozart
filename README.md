@@ -23,7 +23,7 @@ Source: [VLESS-SOCKS5 Vulnerability Research](https://publish.obsidian.md/zapret
 - Added `enableMixedProxy` preference (default: `false`)
 - In TUN mode, sends `mixedPort: 0` to the Go core, preventing proxy creation
 
-### Go core (`v2/config/builder.go`)
+### Go core ([mozart-core](https://github.com/s0ick/mozart-core)) (`v2/config/builder.go`)
 - Added `if hopt.MixedPort > 0` check before creating the mixed inbound
 - Without this check, `mixedPort: 0` caused the OS to assign a random port — still vulnerable
 
@@ -47,16 +47,15 @@ Source: [VLESS-SOCKS5 Vulnerability Research](https://publish.obsidian.md/zapret
 
 ### Build Go core (patched)
 ```bash
-cd hiddify-core
-git checkout v4.1.0
+git clone https://github.com/s0ick/mozart-core.git
+cd mozart-core
 git submodule update --init --recursive
-# Apply the mixed-port fix to v2/config/builder.go
 make android
 ```
 
 ### Build APK
 ```bash
-cp hiddify-core/bin/hiddify-core.aar android/app/libs/
+cp mozart-core/bin/hiddify-core.aar android/app/libs/
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 flutter build apk --split-per-abi
