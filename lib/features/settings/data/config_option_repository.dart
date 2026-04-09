@@ -368,45 +368,7 @@ abstract class ConfigOptions {
   };
 
   static final singboxConfigOptions = Provider<SingboxConfigOption>((ref) {
-    final currentRegion = ref.watch(region);
-    final rules = switch (currentRegion) {
-      Region.ir => [
-          const SingboxRule(
-            domains: "domain:.ir,geosite:ir",
-            ip: "geoip:ir",
-            outbound: RuleOutbound.bypass,
-          ),
-        ],
-      Region.cn => [
-          const SingboxRule(
-            domains: "domain:.cn,geosite:cn",
-            ip: "geoip:cn",
-            outbound: RuleOutbound.bypass,
-          ),
-        ],
-      Region.ru => [
-          const SingboxRule(
-            domains: "domain:.ru,domain:.su,domain:.xn--p1ai",
-            ip: "geoip:ru",
-            outbound: RuleOutbound.bypass,
-          ),
-        ],
-      Region.af => [
-          const SingboxRule(
-            domains: "domain:.af,geosite:af",
-            ip: "geoip:af",
-            outbound: RuleOutbound.bypass,
-          ),
-        ],
-      Region.id => [
-          const SingboxRule(
-            domains: "domain:.id,geosite:id",
-            ip: "geoip:id",
-            outbound: RuleOutbound.bypass,
-          ),
-        ],
-      _ => <SingboxRule>[],
-    };
+    final rules = <SingboxRule>[];
 
     final mode = ref.watch(serviceMode);
     // final reg = ref.watch(Preferences.region.notifier).raw();
